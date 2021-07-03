@@ -92,13 +92,20 @@ CREATE TABLE knn_test(
                         continue
                     if 'Size:' in line:
                         space_size = int(line[line.index(':')+2:-1])
-                        output_file.write(base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time, space_size, remark))
+                        if i == 0:
+                            output_file.write(base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time, space_size, remark))
+                        else:
+                            output_file.write(base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time, space_size, ''))
                         continue
                     if 'Range Search Test' in line:
                         base_sql_index = 1
+                        if i != 0:
+                            remark = line.split(' ')[0]
                         continue
                     if 'KNN Search Test' in line:
                         base_sql_index = 2
+                        if i != 0:
+                            remark = line.split(' ')[0]
                         continue
                     if 'resultSize' in line:
                         continue
