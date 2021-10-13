@@ -1,9 +1,3 @@
-"""
-@:filename random-number.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-02-20
-"""
 import random
 
 if __name__ == '__main__':

@@ -1,11 +1,3 @@
-"""
-@:filename socat-sql.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2020-09-28
-"""
-
-
 def get_ele(ori):
     if ori == 'NaN':
         return 'null'

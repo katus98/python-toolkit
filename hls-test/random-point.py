@@ -1,9 +1,3 @@
-"""
-@:filename random-point.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-15
-"""
 import random
 
 if __name__ == '__main__':

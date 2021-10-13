@@ -69,14 +69,14 @@ CREATE TABLE knn_test(
                 remark = ''
                 for line in lines:
                     if 'Total Data Size' in line:
-                        data_size = int(line[line.index(':')+2:-1])
+                        data_size = int(line[line.index(':') + 2:-1])
                         space_dimension = space_dimensions[i]
                         has_time = has_times[i]
                         continue
                     if ' =========== ' in line:
                         if i == 0:
-                            index_name = line[13:len(line)-15]
-                            remark = line[14+len(index_name):len(line)-13]
+                            index_name = line[13:len(line) - 15]
+                            remark = line[14 + len(index_name):len(line) - 13]
                             if remark == 't':
                                 has_time = 'true'
                                 space_dimension = -1
@@ -84,18 +84,22 @@ CREATE TABLE knn_test(
                                 has_time = 'false'
                                 space_dimension = 0
                         else:
-                            index_name = line[13:len(line)-13]
+                            index_name = line[13:len(line) - 13]
                             remark = ''
                         continue
                     if 'Time:' in line:
-                        build_time = int(line[line.index(':')+2:-1])
+                        build_time = int(line[line.index(':') + 2:-1])
                         continue
                     if 'Size:' in line:
-                        space_size = int(line[line.index(':')+2:-1])
+                        space_size = int(line[line.index(':') + 2:-1])
                         if i == 0:
-                            output_file.write(base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time, space_size, remark))
+                            output_file.write(
+                                base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time,
+                                                          space_size, remark))
                         else:
-                            output_file.write(base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time, space_size, ''))
+                            output_file.write(
+                                base_insert_sql[0].format(index_name, data_size, space_dimension, has_time, build_time,
+                                                          space_size, ''))
                         continue
                     if 'Range Search Test' in line:
                         base_sql_index = 1
@@ -110,7 +114,9 @@ CREATE TABLE knn_test(
                     if 'resultSize' in line:
                         continue
                     items = line[:-1].split(',')
-                    insert_sql = base_insert_sql[base_sql_index].format(index_name, data_size, space_dimension, has_time, items[0], items[1], items[2], items[3], remark)
+                    insert_sql = base_insert_sql[base_sql_index].format(index_name, data_size, space_dimension,
+                                                                        has_time, items[0], items[1], items[2],
+                                                                        items[3], remark)
                     output_file.write(insert_sql)
                 print(filename + " finished!")
     output_file.close()

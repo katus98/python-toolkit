@@ -1,9 +1,3 @@
-"""
-@:filename words-maker.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2020-09-18
-"""
 from random_words import RandomWords
 import random
 

@@ -1,9 +1,3 @@
-"""
-@:filename insert-sql.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2020-10-05
-"""
 from random_words import RandomWords
 import utils.process as pr
 import random

@@ -1,10 +1,3 @@
-"""
-@:description WKT测试文件制作
-@:author Keran Sun (katus)
-@:version 1.0
-"""
-
-
 def get_wkt(m_x, m_y, m_w):
     str1 = str(m_x) + ' ' + str(m_y)
     str2 = str(m_x + m_w) + ' ' + str(m_y)

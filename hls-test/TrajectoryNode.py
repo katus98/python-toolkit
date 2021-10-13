@@ -1,11 +1,3 @@
-"""
-@:filename TrajectoryNode.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-27
-"""
-
-
 class TrajectoryNode:
     def __init__(self, l_line):
         items = l_line.split(',')
@@ -37,9 +29,8 @@ class TrajectoryNode:
                 return 0
 
     def __str__(self):
-        return "{},{},{},{},{},{},{},{},{},{},{},{},{}"\
+        return "{},{},{},{},{},{},{},{},{},{},{},{},{}" \
             .format(self.trajectory_id, self.timestamp, self.x, self.y,
                     self.index_t, self.index_x, self.index_y,
                     self.scaled_t, self.scaled_x, self.scaled_y,
                     self.scaled_index_t, self.scaled_index_x, self.scaled_index_y)
-

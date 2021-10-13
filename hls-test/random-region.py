@@ -1,9 +1,3 @@
-"""
-@:filename random-region.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-13
-"""
 import random
 
 if __name__ == '__main__':
@@ -34,6 +28,7 @@ if __name__ == '__main__':
             for j in range(4):
                 wkt += ps[j][0] + ' ' + ps[j][1] + ','
             wkt += ps[0][0] + ' ' + ps[0][1] + '))'
-            line = str(i) + '\t' + str(n) + '\t' + wkt + '\t' + str(start[2]) + '\t' + str(start[2] + int(interval[2])) + '\n'
+            line = str(i) + '\t' + str(n) + '\t' + wkt + '\t' + str(start[2]) + '\t' + str(
+                start[2] + int(interval[2])) + '\n'
             file.writelines(line)
     file.close()

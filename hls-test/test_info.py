@@ -1,10 +1,3 @@
-"""
-@:filename test_info.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-25
-"""
-
 if __name__ == '__main__':
     output_filename = r'D:\Data\hls-test\infoT-ns.txt'
     base_dir = r'D:\Data\hls-test\results-ns\t'

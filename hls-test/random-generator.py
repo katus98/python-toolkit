@@ -1,13 +1,5 @@
-"""
-@:filename random-generator.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-28
-"""
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
 
 
 # 根据均值、标准差,求指定范围的正态分布概率值

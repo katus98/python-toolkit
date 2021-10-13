@@ -1,10 +1,3 @@
-"""
-@:filename fishnet-generator.py
-@:description 生成渔网网格几何WKT
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-06
-"""
-
 if __name__ == '__main__':
     file_polygon = r'D:\Data\polygon.csv'
     file_linestring = r'D:\Data\linestring.csv'
@@ -26,18 +19,18 @@ if __name__ == '__main__':
             ps = []
             p1 = points.get((i, j))
             ps.append((str(p1[0]), str(p1[1])))
-            p2 = points.get((i+1, j))
+            p2 = points.get((i + 1, j))
             ps.append((str(p2[0]), str(p2[1])))
-            p3 = points.get((i+1, j+1))
+            p3 = points.get((i + 1, j + 1))
             ps.append((str(p3[0]), str(p3[1])))
-            p4 = points.get((i, j+1))
+            p4 = points.get((i, j + 1))
             ps.append((str(p4[0]), str(p4[1])))
             cors = ''
             for ele in ps:
                 cors += ele[0] + ' ' + ele[1] + ','
             cors += ps[0][0] + ' ' + ps[0][1]
-            polygons.append(str(i*pieces[1]+j) + '\tPOLYGON ((' + cors + '))\n')
-            lines.append(str(i*pieces[1]+j) + '\tLINESTRING (' + cors + ')\n')
+            polygons.append(str(i * pieces[1] + j) + '\tPOLYGON ((' + cors + '))\n')
+            lines.append(str(i * pieces[1] + j) + '\tLINESTRING (' + cors + ')\n')
     # for i in range(pieces[0] + 1):
     #     line = 'LINESTRING ('
     #     line += str(points[(i, 0)][0]) + ' ' + str(points[(i, 0)][1]) + ','

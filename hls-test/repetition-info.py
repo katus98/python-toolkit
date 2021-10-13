@@ -1,9 +1,3 @@
-"""
-@:filename repetition-info.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-27
-"""
 import TrajectoryNode as tN
 
 if __name__ == '__main__':

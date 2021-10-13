@@ -1,10 +1,3 @@
-"""
-@:filename advanced_gwr.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-01-08
-"""
-
 import math
 import time
 import random
@@ -192,7 +185,7 @@ def cal_result(matrix_w, matrix_xt_cal, matrix_x_cal, matrix_y_cal):
     temp1 = np.dot(temp, matrix_x_cal)
     global k
     if np.linalg.det(temp1) == 0:
-        for i in range(k+1):
+        for i in range(k + 1):
             temp1[i, i] += 0.000001
     temp3 = np.linalg.inv(temp1)
     temp2 = np.dot(temp, matrix_y_cal)
@@ -240,12 +233,12 @@ def aic_test_random():
     number_random = int(0.7 * NUMBER)
     # list_b = [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000,
     #           20000000, 50000000]
-    list_b_n = list(range(1, int(0.69*NUMBER)))
+    list_b_n = list(range(1, int(0.69 * NUMBER)))
     list_aic = []
     index_shuffle = list(range(NUMBER))
     random.shuffle(index_shuffle)
     source_data_random = {'name': [], 'lon': [], 'lat': [], 'pm2_5': [], 'aod': [], 't': [], 'p': [], 'ws': [],
-                          'rh': [],  'dem': [], 'ndvi': [], 'x': [], 'y': []}
+                          'rh': [], 'dem': [], 'ndvi': [], 'x': [], 'y': []}
     for i in range(number_random):
         source_data_random['name'].append(source_data['name'][index_shuffle[i]])
         source_data_random['lon'].append(source_data['lon'][index_shuffle[i]])
@@ -260,7 +253,7 @@ def aic_test_random():
         source_data_random['ndvi'].append(source_data['ndvi'][index_shuffle[i]])
         source_data_random['x'].append(source_data['x'][index_shuffle[i]])
         source_data_random['y'].append(source_data['y'][index_shuffle[i]])
-    matrix_xt_random = np.mat([[1]*number_random, source_data_random['aod'], source_data_random['t'],
+    matrix_xt_random = np.mat([[1] * number_random, source_data_random['aod'], source_data_random['t'],
                                source_data_random['p'], source_data_random['ws'], source_data_random['rh'],
                                source_data_random['dem'], source_data_random['ndvi']])  # 训练集解释变量矩阵
     matrix_x_random = matrix_xt_random.T  # 训练集解释变量矩阵转置
@@ -311,7 +304,7 @@ def test_global_r(list_y):
     global y_s2
     global y_avg
     for i in list_y:
-        res1 += (i - y_avg)**2
+        res1 += (i - y_avg) ** 2
     return res1 / y_s2
 
 
@@ -336,8 +329,8 @@ def get_cor(x_index, y_index):
     global x_min, x_max, y_min, y_max
     cor = dict()
     cor.clear()
-    cor['x'] = x_min + 250 + y_index*500
-    cor['y'] = y_max - 250 - x_index*500
+    cor['x'] = x_min + 250 + y_index * 500
+    cor['y'] = y_max - 250 - x_index * 500
     return cor
 
 
@@ -371,7 +364,7 @@ def gwr_predict(processor_index, num_processor, matrix_xt_gwr, matrix_x_gwr, mat
             img_local_r[i][j] = test_local_r(matrix_w, list_train_y_predict_local)
         end_time = time.process_time()
         print('进程 {}: 第{:5d}行计算完成! 本行用时: {:6.3f}s, '
-              '本进程累计用时: {:8.3f}s.'.format(processor_index, i+1, end_time - start_time2, end_time - start_time1))
+              '本进程累计用时: {:8.3f}s.'.format(processor_index, i + 1, end_time - start_time2, end_time - start_time1))
     result['intercept'] = img_intercept
     result['aod'] = img_aod
     result['t'] = img_t
@@ -479,9 +472,9 @@ if __name__ == '__main__':
     text_str += '全部的训练样本数目: {}   全部的解释变量个数: {}\n'.format(NUMBER, k)
     y_avg = sum(source_data['pm2_5']) / NUMBER  # 训练样本被解释变量平均值
     for pm25 in source_data['pm2_5']:
-        y_s2 += (pm25 - y_avg)**2  # 训练样本被解释变量方差
+        y_s2 += (pm25 - y_avg) ** 2  # 训练样本被解释变量方差
     print('y_avg: {}   y_s2: {}'.format(y_avg, y_s2))
-    matrix_xt = np.mat([[1]*NUMBER, source_data['aod'], source_data['t'], source_data['p'], source_data['ws'],
+    matrix_xt = np.mat([[1] * NUMBER, source_data['aod'], source_data['t'], source_data['p'], source_data['ws'],
                         source_data['rh'], source_data['dem'], source_data['ndvi']])  # 解释变量矩阵
     matrix_x = matrix_xt.T  # 解释变量矩阵转置
     matrix_yt = np.mat(source_data['pm2_5'])  # 被解释变量矩阵转置
@@ -494,7 +487,7 @@ if __name__ == '__main__':
     global_aicc_list = aic_test(matrix_xt, matrix_x, matrix_y)
     aicc_list = aic_test_random()
     fig = plt.figure(figsize=(10, 6))
-    chart = np.arange(1, int(0.69*NUMBER))
+    chart = np.arange(1, int(0.69 * NUMBER))
     plt.rcParams['font.sans-serif'] = ['SimHei']
     plt.rcParams['axes.unicode_minus'] = False
     plt.plot(chart, aicc_list, c='red')
@@ -508,8 +501,8 @@ if __name__ == '__main__':
     # 输出模型拟合信息
     print('模型拟合全局信息输出开始! 请稍候...')
     text_str += '\n不同的带宽数量对应的AICc\n'
-    for i in range(1, int(0.69*NUMBER)):
-        text_str += 'b_n: {}   AICc: {:.4f}\n'.format(i, aicc_list[i-5])
+    for i in range(1, int(0.69 * NUMBER)):
+        text_str += 'b_n: {}   AICc: {:.4f}\n'.format(i, aicc_list[i - 5])
     text_str += '\n选定的带宽数量为 {}\n'.format(b_n_final)
     text_file = open(r'.\result\result-' + date_str + '-' + utm_str + '.txt', 'w')
     text_file.write(text_str)

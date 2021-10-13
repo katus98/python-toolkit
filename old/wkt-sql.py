@@ -1,10 +1,3 @@
-"""
-@:filename wkt-sql.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2020-09-23
-"""
-
 if __name__ == '__main__':
     number = 10000
     inputFilename = r'D:\Data\polygon4test.csv'

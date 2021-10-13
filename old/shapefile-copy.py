@@ -1,8 +1,3 @@
-"""
-@:description 小区域shape file文件缩放复制到整个区域
-@:author Keran Sun (katus)
-@:version 1.0
-"""
 import shapefile as shp
 import math
 import utils.process as pr

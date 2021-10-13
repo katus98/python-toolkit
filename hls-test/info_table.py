@@ -1,10 +1,3 @@
-"""
-@:filename info_table.py
-@:description
-@:author Keran Sun (katus)
-@:version 1.0, 2021-02-04
-"""
-
 if __name__ == '__main__':
     table_create_sql = """DROP TABLE IF EXISTS range_test;
 CREATE TABLE range_test(
@@ -47,7 +40,7 @@ CREATE TABLE knn_test(
     # output_file.write(table_create_sql)
     for i in range(len(result_names)):
         for size_level in range(level_max):
-            filename = base_dir + result_names[i] + str(size_level+1) + '.txt'
+            filename = base_dir + result_names[i] + str(size_level + 1) + '.txt'
             file = open(filename, 'r')
             lines = file.readlines()
             file.close()
