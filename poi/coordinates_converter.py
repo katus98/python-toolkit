@@ -45,7 +45,13 @@ def single_cov(processor_index, data_list):
             x, y = pos['result'][0]['x'], pos['result'][0]['y']
         else:
             continue
-        line_list = items[:4] + items[4].split(';')[:2] + items[5:]
+        types = ['', '']
+        temp = items[4].split(';')
+        if len(temp) >= 2:
+            types = temp[:2]
+        elif len(temp) == 1:
+            types[0] = temp[0]
+        line_list = items[:4] + types[:2] + items[5:]
         line_list.append(str(x))
         line_list.append(str(y))
         line = '\t'.join(line_list) + '\n'
@@ -55,6 +61,24 @@ def single_cov(processor_index, data_list):
         print('Processor ' + str(processor_index) + ' finished ' + str(count) + ' lines!')
     output_file.close()
     print('Processor ' + str(processor_index) + ' all finished!')
+
+
+def convert_to_sql():
+    global num_pro
+    base_sql = "INSERT INTO hn_poi(name, address, area_name, di_tag, kind, type, phone, x, y, lon, lat) VALUES (" \
+               "'{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, {}, {}, {})"
+    output = r'data\poi\poi_info_cov-final.sql'
+    o_file = open(output, 'w', encoding='UTF-8')
+    for index in range(num_pro):
+        filename = r'data\poi\poi_info_cov-' + str(index) + '.tsv'
+        with open(filename, 'r', encoding='UTF-8') as file:
+            for line in file:
+                items = line[:-1].split("\t")
+                n_line = base_sql.format(items[0], items[1], items[2], items[3], items[4], items[5], items[6], items[7],
+                                         items[8], items[9], items[10])
+                o_file.write(n_line + '\n')
+    o_file.flush()
+    o_file.close()
 
 
 if __name__ == '__main__':
