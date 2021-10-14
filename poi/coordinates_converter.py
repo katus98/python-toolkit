@@ -1,9 +1,13 @@
 import json
 import multiprocessing as mp
 import urllib.request
+import utils.file_merger as fm
+
+num_pro = int(mp.cpu_count())
 
 
 def coordinates_cov():
+    global num_pro
     base_filename = r'data\poi\poi_info_'
     data_set = set()
     for i in range(16):
@@ -11,7 +15,6 @@ def coordinates_cov():
         with open(filename, 'r', encoding='UTF-8') as file:
             for line in file:
                 data_set.add('\t'.join(line[:-1].split('\t')[1:]))
-    num_pro = int(mp.cpu_count())
     all_data_list = list(data_set)
     size, interval = len(data_set), len(data_set) // num_pro
     start, end = 0, 0
@@ -56,3 +59,8 @@ def single_cov(processor_index, data_list):
 
 if __name__ == '__main__':
     coordinates_cov()
+    filenames = []
+    for i in range(num_pro):
+        filenames.append(r'data\poi\poi_info_cov-' + str(i) + '.tsv')
+    output_filename = r'data\poi\poi_info_cov-final.tsv'
+    fm.merge_files(filenames, output_filename)
