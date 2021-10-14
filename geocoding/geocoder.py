@@ -1,4 +1,5 @@
 import json
+import time
 import multiprocessing as mp
 import urllib.request
 
@@ -35,13 +36,8 @@ def single_geo_coding(processor_index, interval, dataset):
     print('Processor ' + str(processor_index) + ' started!')
     for i, row in dataset.iterrows():
         if row['coding_level'] == '-':
-            address = row['address']
-            if address[-1] == ')':
-                address = row['address'][0:row['address'].index('(')]
-            elif address[-1] == '）':
-                address = row['address'][0:row['address'].index('（')]
             url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak=FjTG88NYVp3wbNqq4KdR0KNE8DrgsEnd&city={}'.format(
-                urllib.request.quote(address), urllib.request.quote('嘉兴市'))
+                urllib.request.quote(row['address']), urllib.request.quote('嘉兴市'))
             request = urllib.request.Request(url)
             page = urllib.request.urlopen(request)
             res = json.load(page)
@@ -54,6 +50,7 @@ def single_geo_coding(processor_index, interval, dataset):
                 dataset.iloc[i - processor_index * interval, -1] = coding_level
             else:
                 continue
+            time.sleep(0.1)
         if (i - processor_index * interval + 1) % 1000 == 0:
             print('Processor ' + str(processor_index) + ' finished ' + str(
                 i - processor_index * interval + 1) + ' lines!')
