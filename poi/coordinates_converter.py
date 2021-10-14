@@ -1,7 +1,7 @@
 import json
 import multiprocessing as mp
 import urllib.request
-import utils.file_merger as fm
+import utils.file_tool as fm
 
 num_pro = int(mp.cpu_count())
 
