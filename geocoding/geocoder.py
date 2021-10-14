@@ -37,10 +37,10 @@ def single_geo_coding(processor_index, interval, dataset):
     for i, row in dataset.iterrows():
         if row['coding_level'] == '-':
             try:
-                url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak=FjTG88NYVp3wbNqq4KdR0KNE8DrgsEnd&city={}'.format(
+                url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak=4A5acgvwDku2GSojx6c2EiDUEVYHYIdv&city={}'.format(
                     urllib.request.quote(row['address']), urllib.request.quote('嘉兴市'))
                 request = urllib.request.Request(url)
-                page = urllib.request.urlopen(request)
+                page = urllib.request.urlopen(request, timeout=0.5)
                 res = json.load(page)
                 if res['status'] == 0:
                     result = res['result']
@@ -49,8 +49,11 @@ def single_geo_coding(processor_index, interval, dataset):
                     dataset.iloc[i - processor_index * interval, -3] = lat
                     dataset.iloc[i - processor_index * interval, -2] = comprehension
                     dataset.iloc[i - processor_index * interval, -1] = coding_level
-            finally:
-                time.sleep(0.1)
+                    time.sleep(0.02)
+                else:
+                    print('API-FAILED!', res['status'])
+            except:
+                print('API-FAILED!', -1)
         if (i - processor_index * interval + 1) % 200 == 0:
             print('Processor ' + str(processor_index) + ' finished ' + str(
                 i - processor_index * interval + 1) + ' lines!')
