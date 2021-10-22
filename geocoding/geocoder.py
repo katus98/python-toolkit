@@ -2,11 +2,13 @@ import json
 import time
 import multiprocessing as mp
 import urllib.request
-
 import pandas as pd
+
+ak = ''
 
 
 def geo_coding():
+    global ak
     filename = r'data/海宁违法2020.csv'
     dataset = pd.read_csv(filename, low_memory=False)
     pool_results = []
@@ -21,7 +23,7 @@ def geo_coding():
         else:
             end += interval
         pool_results.append(
-            pool.apply_async(single_geo_coding, args=([processor_index, interval, dataset.loc[start:end, :]])))
+            pool.apply_async(single_geo_coding, args=([processor_index, interval, dataset.loc[start:end, :], ak])))
     pool.close()
     pool.join()
     results = []
@@ -32,13 +34,13 @@ def geo_coding():
     final_dataset.to_csv(r'data\result.csv', index=False, sep=',')
 
 
-def single_geo_coding(processor_index, interval, dataset):
+def single_geo_coding(processor_index, interval, dataset, l_ak):
     print('Processor ' + str(processor_index) + ' started!')
     for i, row in dataset.iterrows():
         if row['coding_level'] == '-':
             try:
-                url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak=4A5acgvwDku2GSojx6c2EiDUEVYHYIdv&city={}'.format(
-                    urllib.request.quote(row['address']), urllib.request.quote('嘉兴市'))
+                url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak={}&city={}'.format(
+                    urllib.request.quote(row['address']), l_ak, urllib.request.quote('嘉兴市'))
                 request = urllib.request.Request(url)
                 page = urllib.request.urlopen(request, timeout=0.5)
                 res = json.load(page)
