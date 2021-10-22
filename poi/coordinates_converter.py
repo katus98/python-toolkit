@@ -1,13 +1,15 @@
 import json
+import time
 import multiprocessing as mp
 import urllib.request
 import utils.file_tool as fm
 
+ak = ''
 num_pro = int(mp.cpu_count())
 
 
 def coordinates_cov():
-    global num_pro
+    global num_pro, ak
     base_filename = r'data\poi\poi_info_'
     data_set = set()
     for i in range(16):
@@ -17,6 +19,7 @@ def coordinates_cov():
                 data_set.add('\t'.join(line[:-1].split('\t')[1:]))
     all_data_list = list(data_set)
     size, interval = len(data_set), len(data_set) // num_pro
+    print(size)
     start, end = 0, 0
     pool = mp.Pool()
     for processor_index in range(num_pro):
@@ -25,25 +28,33 @@ def coordinates_cov():
             end = size
         else:
             end += interval
-        pool.apply_async(single_cov, args=([processor_index, all_data_list[start: end]]))
+        print(processor_index, start, end)
+        pool.apply_async(single_cov, args=([processor_index, all_data_list[start: end], ak]))
     pool.close()
     pool.join()
 
 
-def single_cov(processor_index, data_list):
+def single_cov(processor_index, data_list, l_ak):
     print('Processor ' + str(processor_index) + ' started!')
     count = 0
     output_filename = r'data\poi\poi_info_cov-' + str(processor_index) + '.tsv'
+    error_filename = r'data\poi\poi_info_err-' + str(processor_index) + '.tsv'
     output_file = open(output_filename, 'a', encoding='UTF-8')
+    error_file = open(error_filename, 'a', encoding='UTF-8')
     for data in data_list:
         items = data.split('\t')
-        items[4].split(';')
-        url = 'https://api.map.baidu.com/geoconv/v1/?coords={},{}&from=6&to=5&ak=FjTG88NYVp3wbNqq4KdR0KNE8DrgsEnd'.format(
-            float(items[6]) / 100.0, float(items[7]) / 100.0)
-        pos = json.load(urllib.request.urlopen(url))
-        if pos['status'] == 0:
-            x, y = pos['result'][0]['x'], pos['result'][0]['y']
-        else:
+        url = 'https://api.map.baidu.com/geoconv/v1/?coords={},{}&from=6&to=5&ak={}'.format(
+            float(items[6]) / 100.0, float(items[7]) / 100.0, l_ak)
+        try:
+            pos = json.load(urllib.request.urlopen(url, timeout=1))
+            if pos['status'] == 0:
+                x, y = pos['result'][0]['x'], pos['result'][0]['y']
+                time.sleep(0.01)
+            else:
+                error_file.write(data + '\n')
+                continue
+        except:
+            error_file.write('\t' + data + '\n')
             continue
         types = ['', '']
         temp = items[4].split(';')
@@ -60,7 +71,8 @@ def single_cov(processor_index, data_list):
         output_file.flush()
         print('Processor ' + str(processor_index) + ' finished ' + str(count) + ' lines!')
     output_file.close()
-    print('Processor ' + str(processor_index) + ' all finished!')
+    error_file.close()
+    print('Processor ' + str(processor_index) + ' all finished!', count)
 
 
 def convert_to_sql():

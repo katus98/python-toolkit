@@ -35,7 +35,7 @@ def download_poi():
 
 def download_all_poi():
     lines = []
-    with open(r'data/keywords-2/keywords-2.txt', 'r', encoding='UTF-8') as file:
+    with open(r'data\keywords-2\keywords-2-final.txt', 'r', encoding='UTF-8') as file:
         for line in file:
             lines.append(line)
     num_pro = int(mp.cpu_count())
@@ -97,7 +97,7 @@ def single_all_downloader(processor_index, keywords_list):
         has_next_page = True
         while has_next_page:
             data = []
-            url = 'https://map.baidu.com/?newmap=1&reqflag=pcmap&biz=1&from=webmap&da_par=direct&pcevaname=pc4.1&qt=s&da_src=searchBox.button&wd={}&c=289&pn={}'.format(
+            url = 'https://map.baidu.com/?newmap=1&reqflag=pcmap&biz=1&from=webmap&da_par=direct&pcevaname=pc4.1&qt=s&da_src=searchBox.button&wd={}&c=334&pn={}'.format(
                 urllib.request.quote(wd), page_num)
             page_num += 1
             request = urllib.request.Request(url)

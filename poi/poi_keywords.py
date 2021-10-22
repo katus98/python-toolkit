@@ -10,7 +10,7 @@ def write2txt(data, filepath):
 
 
 def get_type_keywords():
-    request = urllib.request.Request('https://poi.mapbar.com/jiaxing/')
+    request = urllib.request.Request('https://poi.mapbar.com/shanghai/')
     page = urllib.request.urlopen(request)
     data = page.read()
     data = data.decode('utf-8')
@@ -18,13 +18,13 @@ def get_type_keywords():
     tags = soup.select('a')
     res = []
     for tag in tags:
-        if str(tag['href']).startswith('http://poi.mapbar.com/jiaxing/') & (str(tag['href'])[-5:-4] == '/'):
+        if str(tag['href']).startswith('http://poi.mapbar.com/shanghai/') & (str(tag['href'])[-5:-4] == '/'):
             res.append(tag['href'] + '|' + tag.get_text() + '\n')
-    write2txt(res, r'data\keywords-1\keywords-1.txt')
+    write2txt(res, r'data\keywords-1\keywords-1-shanghai.txt')
 
 
 def get_poi_keywords():
-    filename = r'data\keywords-1\keywords-1.txt'
+    filename = r'data\keywords-1\keywords-1-shanghai.txt'
     with open(filename, 'r', encoding='UTF-8') as f:
         for line in f:
             url, wd = line.split('|')
@@ -35,7 +35,7 @@ def get_poi_keywords():
             tags = soup.select('dd a')
             res = [wd[:-1] + '|' + t['href'] + '|' + t.get_text() + '\n' for t in tags]
             print(url, wd[:-1], len(res))
-            write2txt(res, r'data\keywords-2\keywords-2.txt')
+            write2txt(res, r'data\keywords-2\keywords-2-shanghai.txt')
 
 
 def get_poi_keywords_types():
