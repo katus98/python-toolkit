@@ -5,14 +5,14 @@ import utils.process as pr
 if __name__ == '__main__':
     # Set the parameter
     # 数据路径
-    oriFilename = 'D:\\Data\\Shapefile\\dltb\\dltb.shp'
-    desFilename = 'D:\\Data\\Shapefile\\result\\test.shp'
+    oriFilename = r'F:\data\gis\cky\sm\sm.shp'
+    desFilename = r'F:\data\gis\cky\result\polygon4test2.shp'
     # 输出数据覆盖范围
     corRange = {'x1': -180.0, 'x2': 180.0, 'y1': -90.0, 'y2': 90.0}
     # 复制行列数
-    numRange = {'x': 8, 'y': 4}
+    numRange = {'x': 20, 'y': 10}
     # 复制缩放系数
-    xScale, yScale = 17.59, 40.54
+    xScale, yScale = 60, 56
 
     # Generate other parameter
     oriShp = shp.Reader(oriFilename)
