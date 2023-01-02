@@ -32,11 +32,12 @@ def geo_coding():
         results.append(pool_result.get())
     final_dataset = pd.concat(results)
     print(current_time(), 'Result length:', len(final_dataset))
-    final_dataset.to_csv(r'E:\data\graduation\traffic_ori\traffic_jh\accidents.csv', index=False, sep=',')
+    final_dataset.to_csv(r'E:\data\graduation\traffic_ori\traffic_jh\accidents_geo_1.csv', index=False, sep=',')
 
 
 def single_geo_coding(processor_index, interval, dataset, l_ak):
     print(current_time(), 'Processor ' + str(processor_index) + ' started!')
+    count = 0
     for i, row in dataset.iterrows():
         if row['coding_level'] == '-':
             try:
@@ -53,16 +54,18 @@ def single_geo_coding(processor_index, interval, dataset, l_ak):
                     dataset.iloc[i - processor_index * interval, -3] = lat
                     dataset.iloc[i - processor_index * interval, -2] = comprehension
                     dataset.iloc[i - processor_index * interval, -1] = coding_level
-                    time.sleep(0.02)
+                    count += 1
                 elif res['status'] == 302:
                     break
                 else:
                     print(current_time(), 'API-FAILED!', res['status'])
             except:
                 print(current_time(), 'API-FAILED!', -1)
+        else:
+            count += 1
         if (i - processor_index * interval + 1) % 1000 == 0:
             print(current_time(), 'Processor ' + str(processor_index) + ' finished ' + str(i - processor_index * interval + 1) + ' lines!')
-    print(current_time(), 'Processor ' + str(processor_index) + ' all finished!', len(dataset))
+    print(current_time(), 'Processor ' + str(processor_index) + ' all finished!', count, len(dataset))
     return dataset
 
 
