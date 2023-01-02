@@ -10,7 +10,7 @@ ak = ''
 
 def geo_coding():
     global ak
-    filename = r'F:\data\form\hn-illegal\csv\hn_accidents.csv'
+    filename = r'E:\data\graduation\traffic_ori\traffic_jh\accidents.csv'
     dataset = pd.read_csv(filename, low_memory=False)
     pool_results = []
     num_pro = int(mp.cpu_count())
@@ -31,17 +31,17 @@ def geo_coding():
     for pool_result in pool_results:
         results.append(pool_result.get())
     final_dataset = pd.concat(results)
-    print('Result length:', len(final_dataset))
-    final_dataset.to_csv(r'F:\data\form\hn-illegal\csv\hn_accidents_geo_1.csv', index=False, sep=',')
+    print(current_time(), 'Result length:', len(final_dataset))
+    final_dataset.to_csv(r'E:\data\graduation\traffic_ori\traffic_jh\accidents.csv', index=False, sep=',')
 
 
 def single_geo_coding(processor_index, interval, dataset, l_ak):
-    print('Processor ' + str(processor_index) + ' started!')
+    print(current_time(), 'Processor ' + str(processor_index) + ' started!')
     for i, row in dataset.iterrows():
         if row['coding_level'] == '-':
             try:
                 url = 'https://api.map.baidu.com/geocoding/v3/?address={}&output=json&ak={}&city={}&ret_coordtype=gcj02ll'.format(
-                    urllib.request.quote(row['address']), l_ak, urllib.request.quote('嘉兴市'))
+                    urllib.request.quote(row['address']), l_ak, urllib.request.quote('金华市'))
                 request = urllib.request.Request(url)
                 page = urllib.request.urlopen(request, timeout=0.5)
                 res = json.load(page)
@@ -57,14 +57,17 @@ def single_geo_coding(processor_index, interval, dataset, l_ak):
                 elif res['status'] == 302:
                     break
                 else:
-                    print('API-FAILED!', res['status'])
+                    print(current_time(), 'API-FAILED!', res['status'])
             except:
-                print('API-FAILED!', -1)
-        if (i - processor_index * interval + 1) % 200 == 0:
-            print('Processor ' + str(processor_index) + ' finished ' + str(
-                i - processor_index * interval + 1) + ' lines!')
-    print('Processor ' + str(processor_index) + ' all finished!', len(dataset))
+                print(current_time(), 'API-FAILED!', -1)
+        if (i - processor_index * interval + 1) % 1000 == 0:
+            print(current_time(), 'Processor ' + str(processor_index) + ' finished ' + str(i - processor_index * interval + 1) + ' lines!')
+    print(current_time(), 'Processor ' + str(processor_index) + ' all finished!', len(dataset))
     return dataset
+
+
+def current_time():
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
 
 
 if __name__ == '__main__':
